@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '../../Layouts/AppLayout.vue';
 import { Head, router, usePage } from '@inertiajs/vue3';
 import {
     Activity,
@@ -11,7 +11,7 @@ import {
     Vault,
 } from 'lucide-vue-next';
 import { onMounted, ref, watch } from 'vue';
-import { QzPrinterService } from '@/services/qzPrinter';
+import { QzPrinterService } from '../../Services/qzPrinter';
 
 // Partial Components
 import AccountHeader from './Partials/AccountHeader.vue';

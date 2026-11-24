@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '../../Layouts/AppLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
 import { Plus, Search } from 'lucide-vue-next';
 import { computed, ref } from 'vue';

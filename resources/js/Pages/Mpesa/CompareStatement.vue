@@ -2,7 +2,7 @@
 import TransactionMappingModal from '@/components/Mpesa/TransactionMappingModal.vue';
 import TransactionSyncModal from '@/components/Mpesa/TransactionSyncModal.vue';
 import SearchableSelect from '@/components/SearchableSelect.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '../../Layouts/AppLayout.vue';
 import 'flatpickr/dist/flatpickr.css';
 import {
     Activity,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '../../../../Components/Pagination.vue';
 import SearchableSelect from '@/components/SearchableSelect.vue';
 import TransactionMappingModal from '@/components/Mpesa/TransactionMappingModal.vue';
 import TransactionSyncModal from '@/components/Mpesa/TransactionSyncModal.vue';

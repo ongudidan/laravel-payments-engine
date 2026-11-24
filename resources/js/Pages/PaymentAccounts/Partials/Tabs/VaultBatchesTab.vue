@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '../../../../Components/Pagination.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -40,7 +40,7 @@ import {
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
-import { QzPrinterService } from '@/services/qzPrinter';
+import { QzPrinterService } from '../../../../Services/qzPrinter';
 
 const props = defineProps<{
     account: any;

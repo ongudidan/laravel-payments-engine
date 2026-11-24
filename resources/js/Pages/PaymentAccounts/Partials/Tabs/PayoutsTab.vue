@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '../../../../Components/Pagination.vue';
 import {
     Dialog,
     DialogContent,

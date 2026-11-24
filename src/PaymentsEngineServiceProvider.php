@@ -67,7 +67,7 @@ class PaymentsEngineServiceProvider extends ServiceProvider
             return new CashDrawerService($app->make(PaymentAccountTransferService::class));
         });
 
-        $this->app->singleton(MpesaConfigService::class, fn () => new MpesaConfigService());
+        $this->app->singleton(MpesaConfigService::class, fn () => new MpesaConfigService);
 
         $this->app->singleton(MpesaTransactionService::class, function ($app) {
             return new MpesaTransactionService(

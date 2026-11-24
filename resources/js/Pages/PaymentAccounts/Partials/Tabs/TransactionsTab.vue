@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '../../../../Components/Pagination.vue';
 import { router } from '@inertiajs/vue3';
 import 'flatpickr/dist/flatpickr.css';
 import { Calendar, Clock, Download, History, Wallet, X } from 'lucide-vue-next';

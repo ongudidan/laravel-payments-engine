@@ -9,7 +9,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '../../Layouts/AppLayout.vue';
 import { Head, router, usePage } from '@inertiajs/vue3';
 import { Plus, Search, SlidersHorizontal } from 'lucide-vue-next';
 import { reactive, ref, watch } from 'vue';

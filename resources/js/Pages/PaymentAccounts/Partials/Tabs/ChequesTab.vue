@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Pagination from '@/components/Pagination.vue';
+import Pagination from '../../../../Components/Pagination.vue';
 import SearchableSelect from '@/components/SearchableSelect.vue';
-import { QzPrinterService } from '@/services/qzPrinter';
+import { QzPrinterService } from '../../../../Services/qzPrinter';
 import { router } from '@inertiajs/vue3';
 import 'flatpickr/dist/flatpickr.css';
 import debounce from 'lodash/debounce';

@@ -15,7 +15,7 @@ import {
     XCircle,
 } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import { QzPrinterService } from '@/services/qzPrinter';
+import { QzPrinterService } from '../../../../../Services/qzPrinter';
 
 defineProps<{
     cheques: any;

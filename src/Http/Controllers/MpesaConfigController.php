@@ -10,9 +10,7 @@ use Ongudidan\PaymentsEngine\Services\MpesaConfigService;
 
 class MpesaConfigController extends Controller
 {
-    public function __construct(protected MpesaConfigService $configService)
-    {
-    }
+    public function __construct(protected MpesaConfigService $configService) {}
 
     public function index(): JsonResponse
     {
@@ -91,7 +89,7 @@ class MpesaConfigController extends Controller
 
     public function toggleActive(MpesaConfig $config): JsonResponse
     {
-        $config->update(['is_active' => !$config->is_active]);
+        $config->update(['is_active' => ! $config->is_active]);
 
         return response()->json([
             'success' => true,

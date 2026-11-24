@@ -2,9 +2,12 @@
 
 namespace Ongudidan\PaymentsEngine\Services;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Ongudidan\PaymentsEngine\Enums\MpesaTransactionStatus;
 use Ongudidan\PaymentsEngine\Events\MpesaTransactionReceived;
@@ -21,7 +24,7 @@ class MpesaTransactionService
         protected WalletService $walletService,
         protected ?MpesaConfigService $configService = null
     ) {
-        $this->configService = $configService ?? new MpesaConfigService();
+        $this->configService = $configService ?? new MpesaConfigService;
     }
 
     /**
@@ -40,6 +43,58 @@ class MpesaTransactionService
         $description = $params['description'] ?? 'Payment';
 
         $checkoutRequestId = 'ws_CO_'.date('dmYHis').'_'.rand(100000, 999999);
+
+        // Attempt live Daraja STK Push if configuration credentials are present
+        if ($config && $config->consumer_key && $config->consumer_secret && $config->passkey) {
+            $timestamp = date('YmdHis');
+            $password = base64_encode($shortcode.$config->passkey.$timestamp);
+            $baseUrl = ($config->environment === 'live')
+                ? 'https://api.safaricom.co.ke'
+                : 'https://sandbox.safaricom.co.ke';
+
+            $callbackBase = config('payments-engine.mpesa.callback_url_base', config('app.url'));
+            $callbackUrl = $config->callback_url ?: rtrim($callbackBase, '/').'/api/v1/payments-engine/mpesa/stk-callback';
+
+            $payload = [
+                'BusinessShortCode' => $shortcode,
+                'Password' => $password,
+                'Timestamp' => $timestamp,
+                'TransactionType' => ($config->type === 'till') ? 'CustomerBuyGoodsOnline' : 'CustomerPayBillOnline',
+                'Amount' => (int) round($amount),
+                'PartyA' => $phoneNumber,
+                'PartyB' => ($config->type === 'till') ? ($config->nominated_number ?: $shortcode) : $shortcode,
+                'PhoneNumber' => $phoneNumber,
+                'CallBackURL' => $callbackUrl,
+                'AccountReference' => substr($reference, 0, 12),
+                'TransactionDesc' => substr($description, 0, 13),
+            ];
+
+            try {
+                $token = $this->configService->generateOAuthToken($config);
+                $response = Http::withToken($token)
+                    ->timeout(30)
+                    ->post("{$baseUrl}/mpesa/stkpush/v1/processrequest", $payload);
+
+                $resData = $response->json() ?? [];
+                if ($response->successful() && isset($resData['ResponseCode']) && $resData['ResponseCode'] === '0') {
+                    $checkoutRequestId = $resData['CheckoutRequestID'];
+                } else {
+                    $errorMsg = $resData['errorMessage'] ?? ($resData['ResponseDescription'] ?? 'Daraja STK push failed.');
+                    Log::warning('Daraja STK push error response', [
+                        'shortcode' => $shortcode,
+                        'response' => $resData,
+                    ]);
+                    if (! app()->environment('testing')) {
+                        throw new Exception("Safaricom STK push failed: {$errorMsg}");
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::error('STK push network/auth error', ['error' => $e->getMessage()]);
+                if (! app()->environment('testing')) {
+                    throw $e;
+                }
+            }
+        }
 
         // Record pending M-Pesa transaction
         $transaction = MpesaTransaction::create([

@@ -4,7 +4,6 @@ namespace Ongudidan\PaymentsEngine\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Ongudidan\PaymentsEngine\Models\MpesaConfig;
 use Ongudidan\PaymentsEngine\Models\PaymentAccount;
 
@@ -48,8 +47,8 @@ class MpesaConfigService
             ->timeout(20)
             ->get($url);
 
-        if (!$response->successful()) {
-            throw new Exception("Daraja OAuth authentication failed: " . $response->body());
+        if (! $response->successful()) {
+            throw new Exception('Daraja OAuth authentication failed: '.$response->body());
         }
 
         return $response->json('access_token');

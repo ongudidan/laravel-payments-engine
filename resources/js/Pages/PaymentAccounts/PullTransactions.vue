@@ -6,7 +6,7 @@ import PullRequestsTab from './Partials/Tabs/PullRequestsTab.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '../../Layouts/AppLayout.vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import {
     ArrowLeft,
